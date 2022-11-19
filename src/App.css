@@ -1,0 +1,147 @@
+
+:root {
+	/*
+	define as separate properties
+	*/
+	--text-color: #ddd;
+	--textcard-height: 200px;
+	--textcard-padding: 20px;
+	--textcard-skeleton: linear-gradient(#fff var(--textcard-height), transparent 0);
+	
+	--title-height: 24px;
+	--title-width: 60%;
+	--title-position: var(--textcard-padding) var(--textcard-padding);
+	--title-skeleton: linear-gradient(var(--text-color) var(--title-height), transparent 0);
+	
+	--text-height: 16px;
+	--text-width: 75%;
+	--text-position: var(--textcard-padding) 70px;
+	--text-skeleton: linear-gradient(var(--text-color) var(--text-height), transparent 0);
+	
+	--text2-width: 85%;
+	--text2-position: var(--textcard-padding) 105px;
+	
+	--text3-width: 85%;
+	--text3-position: var(--textcard-padding) 130px;
+	
+	--text4-width: 68%;
+	--text4-position: var(--textcard-padding) 155px;
+	
+	--blur-width: 65%;
+	--blur-size: var(--blur-width) var(--textcard-height);
+	
+	--imgbox-height: 150px;
+	--imgbox-width: 100%;
+	--imgbox-position: 0 0;
+	--imgbox-skeleton: linear-gradient(var(--text-color) var(--imgbox-height), transparent 0);
+	
+	--imgboxtext1-height: 16px;
+	--imgboxtext1-width: 75%;
+	--imgboxtext1-position: var(--textcard-padding) 170px;
+	--imgboxtext1-skeleton: linear-gradient(var(--text-color) var(--text-height), transparent 0);
+}
+
+.skeleton-box {
+	margin: 20px 0;
+}
+
+.skeleton-article {
+	/*opacity: 0.8;*/
+	width: 100%;
+	height: var(--textcard-height);
+}
+
+.skeleton-article:after {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-image: 
+		linear-gradient(
+			90deg,
+			rgba(255, 255, 255, 0) 0,
+			rgba(255, 255, 255, 0.8) 50%,
+			rgba(255, 255, 255, 0) 100%
+		),
+		var(--text-skeleton),
+		var(--text-skeleton),
+		var(--text-skeleton),
+		var(--text-skeleton),
+		var(--title-skeleton), 
+		var(--textcard-skeleton);
+	background-size: 
+		var(--blur-size),
+		var(--text4-width) var(--text-height),
+		var(--text3-width) var(--text-height),
+		var(--text2-width) var(--text-height),
+		var(--text-width) var(--text-height),
+		var(--title-width) var(--title-height), 
+		100% 100%;
+	background-position: 
+		-150% 0, 
+		var(--text4-position),
+		var(--text3-position),
+		var(--text2-position),
+		var(--text-position), 
+		var(--title-position), 
+		0 0;
+	background-repeat: no-repeat;
+	animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+	to {
+		background-position: 
+			350% 0, 
+			var(--text4-position),
+			var(--text3-position),
+			var(--text2-position),
+			var(--text-position), 
+			var(--title-position), 
+			0 0;
+	}
+}
+
+.skeleton-card {
+	float: left;
+	width: calc(33.333% - 10px);
+	height: 250px;
+	margin: 0 10px 0 0;
+	background: #fff;
+	border-radius: 8px;
+	overflow: hidden;
+}
+.skeleton-card:after {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-image: 
+		linear-gradient(
+			90deg,
+			rgba(255, 255, 255, 0) 0,
+			rgba(255, 255, 255, 0.8) 50%,
+			rgba(255, 255, 255, 0) 100%
+		),
+		var(--imgboxtext1-skeleton),
+		var(--imgbox-skeleton);
+	background-size: 
+		var(--blur-size),
+		var(--imgboxtext1-width) var(--imgboxtext1-height), 
+		100% 100%;
+	background-position: 
+		-150% 0, 
+		var(--imgboxtext1-position), 
+		0 0;
+	background-repeat: no-repeat;
+	animation: loading-imgcard 1.5s infinite;
+}
+
+@keyframes loading-imgcard {
+	to {
+		background-position: 
+			350% 0, 
+			var(--imgboxtext1-position), 
+			0 0;
+	}
+}
