@@ -5,6 +5,8 @@ import Main from "../Pages/Main";
 import Profile from "../Pages/Profile/Profile";
 import DetailPage from "../Pages/DetailPage/DetailPage";
 import Login from "../Pages/Login/Login";
+import BuyDetail from "../Pages/BuyDetail/BuyDetail";
+import Congrats from "../Pages/Congrats/Congrats";
 
 
 export default function RouteProvider() {
@@ -15,6 +17,8 @@ export default function RouteProvider() {
             <Route path="/registro" element={<Registro />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/buy-detail" element={<BuyDetail />} />
+            <Route path="/congrats" element={<Congrats />} />
             <Route path="*" element={<Error />} />
         </Routes>
     );

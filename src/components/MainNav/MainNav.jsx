@@ -43,6 +43,8 @@ function MainNav() {
                     <>
                     <div>Hola {context.user.name}</div>
                     </>}
+                    <p>user:pablojaramunoz@gmail.com
+                        <br /> pass: Admin1234</p>
             </Container>
         </Navbar>
 

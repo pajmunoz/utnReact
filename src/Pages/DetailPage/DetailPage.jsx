@@ -1,18 +1,25 @@
-import { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getByIdProductos, getByIdDetail } from '../../services/swCharService'
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 import Loader from '../../components/Loader/Loader';
 import Slider from '../../components/Slider/Slider';
 import './DetailPage.css';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
+import { Card, Button, Form, Alert } from 'react-bootstrap';
+import { BuyContext } from '../../Context/BuyContext';
+import { useNavigate } from 'react-router-dom';
+
 
 function DetailPage() {
     const [prod, setProd] = useState([]);
     const [detail, getDetail] = useState([]);
     const [loading, isLoading] = useState(true);
     const { id } = useParams()
+    const [quantity, setQuantity] = useState(0)
+    const [available_quantity, setAvailableQuantity] = useState(false)
+
+    const context = useContext(BuyContext)
+    const navigate = useNavigate()
 
 
 
@@ -22,6 +29,9 @@ function DetailPage() {
                 const responseData = await getByIdProductos(id);
                 setProd(responseData);
                 isLoading(false);
+
+
+
             } catch (e) {
                 console.log(e);
             }
@@ -36,6 +46,33 @@ function DetailPage() {
 
         result();
     }, [id]);
+
+    const handleQuantityChange = (e) => {
+        let value = parseInt(e.target.value, 10);
+        setQuantity(value)
+
+
+
+        if (value <= prod.available_quantity && value > 0) {
+            setAvailableQuantity(true)
+
+
+        } else {
+            setAvailableQuantity(false)
+
+        }
+    }
+    const handleBuyBtn = () => {
+
+        console.log(prod, quantity)
+        context.handleBuy(prod, quantity)
+
+
+        setTimeout(() => {
+            navigate('/buy-detail')
+        }, 1000)
+
+    }
     if (!loading) {
 
         return (
@@ -55,10 +92,39 @@ function DetailPage() {
                                 <p className="card-text"> <strong> Unidades disponibles:</strong> {prod.available_quantity}</p>
                                 <p className="card-text"> <strong> Condición:</strong> {prod.condition}</p>
                                 <p className="card-text pb-5"> <strong> Ubicación:</strong> {prod.seller_address.city.name}, {prod.seller_address.state.name}</p>
-                                <Button variant="primary" className="my-2">Comprar</Button>
+                                <div className="row">
+                                    <p>Cantidad:</p>
+                                    <div className="col">
+                                        <Form.Group controlId="formFile" className="mb-3">
+
+                                            <Form.Control min="1" value={quantity} onChange={handleQuantityChange} type="number" />
+                                        </Form.Group>
+                                    </div>
+                                    <div className="col">
+                                        {quantity > 0 && <>
+
+                                            <Button onClick={handleBuyBtn} variant="primary">Comprar</Button>
+
+                                        </>}
+                                    </div>
+                                </div>
+
+                                {!available_quantity &&
+                                    <>
+                                        <Alert key='warning' variant='warning'>
+                                            Cantidad no disponible
+                                        </Alert>
+
+                                    </>}
+                                {available_quantity &&
+                                    <>
+                                        <Alert key='success' variant='success'>
+                                            Cantidad disponible {quantity}
+                                        </Alert>
+                                    </>}
+
                             </Card.Body>
                         </Card>
-
                     </div>
                     <div className="col">
                         <h5 className="mt-3">Detalle</h5>

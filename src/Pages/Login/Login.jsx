@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthContext'
 import AlertComp from "../../components/AlertComp/AlertComp";
 import { loginMessage } from "../../Utils/errorMessage";
+import { BuyContext } from "../../Context/BuyContext";
 
 
 
@@ -14,33 +15,64 @@ export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate()
   const context = useContext(AuthContext)
+  const contextProd = useContext(BuyContext)
   const [alert, setAlert] = useState({ variant: '', text: '' })
 
   const onSubmit = async data => {
-    console.log(data)
-    try {
-      const responseUser = await firebase.auth.signInWithEmailAndPassword(data.email, data.password)
-      console.log("responseUser", responseUser.user.uid, data)
+    if (contextProd) {
+      try {
+        const responseUser = await firebase.auth.signInWithEmailAndPassword(data.email, data.password)
+        console.log("responseUser", responseUser.user.uid, data)
 
-      if (responseUser.user.uid) {
-        const userDocument = await firebase.firestore().collection('usuarios')
-          //pide a firebase la coleccion 'usuarios', busca dentro de 'userId'
-          .where('userId', '==', responseUser.user.uid)
-          .get()
- 
-        const user = userDocument.docs[0].data()
-        context.handleLogin(user)
-        setAlert({ variant: 'success', text: ` ${user?.name} has iniciado sesión ` })
+        if (responseUser.user.uid) {
+          const userDocument = await firebase.firestore().collection('usuarios')
+            //pide a firebase la coleccion 'usuarios', busca dentro de 'userId'
+            .where('userId', '==', responseUser.user.uid)
+            .get()
 
-        setTimeout(() => {
-          navigate('/profile')
-        }, 2000)
+          const user = userDocument.docs[0].data()
+          context.handleLogin(user)
+          setAlert({ variant: 'success', text: ` ${user?.name} has iniciado sesión ` })
 
+          setTimeout(() => {
+            navigate('/buy-detail')
+          }, 2000)
+
+        }
+
+      } catch (e) {
+        console.log(e)
+        setAlert({ variant: 'danger', text: loginMessage[e.code] || 'Ha ocurrido un error' })
       }
 
-    } catch (e) {
-      console.log(e)
-      setAlert({ variant: 'danger', text: loginMessage[e.code] || 'Ha ocurrido un error' })
+
+
+    } else {
+      console.log(data)
+      try {
+        const responseUser = await firebase.auth.signInWithEmailAndPassword(data.email, data.password)
+        console.log("responseUser", responseUser.user.uid, data)
+
+        if (responseUser.user.uid) {
+          const userDocument = await firebase.firestore().collection('usuarios')
+            //pide a firebase la coleccion 'usuarios', busca dentro de 'userId'
+            .where('userId', '==', responseUser.user.uid)
+            .get()
+
+          const user = userDocument.docs[0].data()
+          context.handleLogin(user)
+          setAlert({ variant: 'success', text: ` ${user?.name} has iniciado sesión ` })
+
+          setTimeout(() => {
+            navigate('/profile')
+          }, 2000)
+
+        }
+
+      } catch (e) {
+        console.log(e)
+        setAlert({ variant: 'danger', text: loginMessage[e.code] || 'Ha ocurrido un error' })
+      }
     }
   }
   return (

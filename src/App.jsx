@@ -6,6 +6,7 @@ import './App.css';
 import Footer from "./components/Footer/Footer";
 import firebase from "./config/firebase"
 import AppProvider from "./Context/AuthContext"
+import BuyProvider from "./Context/BuyContext";
 
 console.log(firebase)
 
@@ -16,15 +17,17 @@ function App() {
       <div className="container">
         <Router>
           <AppProvider>
-          <MainNav />
-          <hr />
-          <Public />
+            <BuyProvider>
+              <MainNav />
+              <hr />
+              <Public />
+            </BuyProvider>
           </AppProvider>
         </Router>
       </div>
     </div>
-    <Footer/>
-    </>
+    <Footer />
+  </>
   );
 }
 

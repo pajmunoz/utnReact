@@ -31,19 +31,19 @@ export default function Footer() {
                                     <h4 className="footer-widget-title">Popular Category</h4>
                                     <ul>
                                         <li>
-                                            <a href="/">Wordpress</a>
+                                            <p>Wordpress</p>
                                         </li>
                                         <li>
-                                            <a href="/">Plugins</a>
+                                            <p>Plugins</p>
                                         </li>
                                         <li>
-                                            <a href="/">Joomla Template</a>
+                                            <p>Joomla Template</p>
                                         </li>
                                         <li>
-                                            <a href="/">Admin Template</a>
+                                            <p>Admin Template</p>
                                         </li>
                                         <li>
-                                            <a href="/">HTML Template</a>
+                                            <p>HTML Template</p>
                                         </li>
                                     </ul>
                                 </div>
